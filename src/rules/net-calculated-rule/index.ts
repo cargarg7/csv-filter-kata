@@ -1,8 +1,8 @@
-import { HEADER, SEPARATOR_CSV } from '../../../enums';
-import { RuleByLineOrFalse } from '../types';
+import { HEADER, SEPARATOR_CSV } from '../../enums';
+import { RulesOrFalse } from '../types';
 import { areEqualComparisonWithAccuracy } from './comparison.helper';
 
-export function execute(payload: RuleByLineOrFalse): RuleByLineOrFalse {
+export function execute(payload: RulesOrFalse): RulesOrFalse {
 	if (typeof payload === 'boolean') return payload;
 
 	// Format lines
@@ -27,8 +27,5 @@ export function execute(payload: RuleByLineOrFalse): RuleByLineOrFalse {
 	const calculatedNet = grossFieldSanitized * ((100 - taxFieldSanitized) / 100);
 	if (!areEqualComparisonWithAccuracy(netFieldSanitized, calculatedNet)) return false;
 
-	return {
-		header,
-		line,
-	};
+	return payload;
 }

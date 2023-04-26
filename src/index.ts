@@ -1,15 +1,13 @@
-import { rulesByLine, rulesByLines } from './rules/rules';
+import { rules } from './rules/rules';
 
 export function parseCSV(header?: string, lines?: string[]) {
 	if (!header) throw new Error('Header must not be empty');
 	if (!lines?.length) return { header, lines: [] };
 
 	// Rules
-	const linesFilteredByLines = rulesByLines(header)(lines);
-	const linesFilteredByLine = linesFilteredByLines?.lines?.filter((line: string) => !!rulesByLine(header)(line));
-
+	const linesFiltered = lines?.filter((line: string) => !!rules({ header, line, lines }));
 	return {
 		header,
-		lines: linesFilteredByLine,
+		lines: linesFiltered,
 	};
 }

@@ -1,7 +1,7 @@
-import { HEADER, SEPARATOR_CSV } from '../../../enums';
-import { RuleByLineOrFalse } from '../types';
+import { HEADER, SEPARATOR_CSV } from '../../enums';
+import { RulesOrFalse } from '../types';
 
-export function execute(payload: RuleByLineOrFalse): RuleByLineOrFalse {
+export function execute(payload: RulesOrFalse): RulesOrFalse {
 	if (typeof payload === 'boolean') return payload;
 
 	// Format lines
@@ -20,8 +20,5 @@ export function execute(payload: RuleByLineOrFalse): RuleByLineOrFalse {
 	// Rule
 	if (cifField && nifField) return false;
 
-	return {
-		header,
-		line,
-	};
+	return payload;
 }

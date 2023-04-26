@@ -1,11 +1,7 @@
-type BasicRules = {
+export type Rules = {
 	header: string;
-};
-
-export type RulesByLine = BasicRules & {
 	line: string;
-};
-
-export type RulesByLines = BasicRules & {
 	lines: string[];
 };
+
+export type RulesOrFalse = Rules | boolean;
