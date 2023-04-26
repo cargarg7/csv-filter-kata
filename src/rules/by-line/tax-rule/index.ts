@@ -1,10 +1,11 @@
 import { HEADER, SEPARATOR_CSV } from '../../../enums';
-import { Rules } from '../../types';
+import { RuleByLineOrFalse } from '../types';
 
-export function execute({ header, line, lines, status }: Rules): Rules {
-	if (!header || !line) return { status: false, lines };
+export function execute(payload: RuleByLineOrFalse): RuleByLineOrFalse {
+	if (typeof payload === 'boolean') return payload;
 
 	// Format lines
+	const { header, line } = payload;
 	const headers = header.split(SEPARATOR_CSV);
 	const fields = line.split(SEPARATOR_CSV);
 
@@ -17,12 +18,10 @@ export function execute({ header, line, lines, status }: Rules): Rules {
 	const igicField = fields[igicPositionByHeaders];
 
 	// Rule
-	if (ivaField && igicField) return { status: false, lines };
+	if (ivaField && igicField) return false;
 
 	return {
 		header,
 		line,
-		lines,
-		status,
 	};
 }

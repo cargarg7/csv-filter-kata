@@ -1,6 +1,11 @@
-export type Rules = {
-	status: boolean;
-	header?: string;
-	line?: string;
+type BasicRules = {
+	header: string;
+};
+
+export type RulesByLine = BasicRules & {
+	line: string;
+};
+
+export type RulesByLines = BasicRules & {
 	lines: string[];
 };

@@ -1,11 +1,12 @@
 import { HEADER, SEPARATOR_CSV } from '../../../enums';
-import { Rules } from '../../types';
+import { RuleByLineOrFalse } from '../types';
 import { areEqualComparisonWithAccuracy } from './comparison.helper';
 
-export function execute({ header, line, lines, status }: Rules): Rules {
-	if (!header || !line) return { status: false, lines };
+export function execute(payload: RuleByLineOrFalse): RuleByLineOrFalse {
+	if (typeof payload === 'boolean') return payload;
 
 	// Format lines
+	const { header, line } = payload;
 	const headers = header.split(SEPARATOR_CSV);
 	const fields = line.split(SEPARATOR_CSV);
 
@@ -24,12 +25,10 @@ export function execute({ header, line, lines, status }: Rules): Rules {
 
 	// Calculate Net value
 	const calculatedNet = grossFieldSanitized * ((100 - taxFieldSanitized) / 100);
-	if (!areEqualComparisonWithAccuracy(netFieldSanitized, calculatedNet)) return { status: false, lines };
+	if (!areEqualComparisonWithAccuracy(netFieldSanitized, calculatedNet)) return false;
 
 	return {
 		header,
 		line,
-		lines,
-		status,
 	};
 }
