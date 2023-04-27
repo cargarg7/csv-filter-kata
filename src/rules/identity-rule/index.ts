@@ -1,24 +1,15 @@
-import { HEADER, SEPARATOR_CSV } from '../../enums';
-import { RulesOrFalse } from '../types';
+import { RulesInput } from '../types';
+import { IDENTITY_RULE_FIELDS } from './enums';
 
-export function execute(payload: RulesOrFalse): RulesOrFalse {
-	if (typeof payload === 'boolean') return payload;
-
-	// Format lines
-	const { header, line } = payload;
-	const headers = header.split(SEPARATOR_CSV);
-	const fields = line.split(SEPARATOR_CSV);
-
+export function execute({ headers, fields }: RulesInput): boolean {
 	// Position Index by Headers
-	const cifPositionByHeaders = headers.findIndex((field) => field === HEADER.CIF);
-	const nifPositionByHeaders = headers.findIndex((field) => field === HEADER.NIF);
+	const cifPositionByHeaders = headers.findIndex((field) => field === IDENTITY_RULE_FIELDS.CIF);
+	const nifPositionByHeaders = headers.findIndex((field) => field === IDENTITY_RULE_FIELDS.NIF);
 
 	// Sanitized Fields
 	const cifField = fields[cifPositionByHeaders];
 	const nifField = fields[nifPositionByHeaders];
 
 	// Rule
-	if (cifField && nifField) return false;
-
-	return payload;
+	return !!(cifField && nifField);
 }

@@ -1,20 +1,13 @@
-import { HEADER, SEPARATOR_CSV } from '../../enums';
-import { RulesOrFalse } from '../types';
+import { RulesInput } from '../types';
+import { NET_CALCULATED_RULE_FIELDS } from './enums';
 import { areEqualComparisonWithAccuracy } from './comparison.helper';
 
-export function execute(payload: RulesOrFalse): RulesOrFalse {
-	if (typeof payload === 'boolean') return payload;
-
-	// Format lines
-	const { header, line } = payload;
-	const headers = header.split(SEPARATOR_CSV);
-	const fields = line.split(SEPARATOR_CSV);
-
+export function execute({ headers, fields }: RulesInput): boolean {
 	// Position Index by Headers
-	const grossPositionByHeaders = headers.findIndex((field) => field === HEADER.IMPORT_GROSS);
-	const netPositionByHeaders = headers.findIndex((field) => field === HEADER.IMPORT_NET);
-	const ivaPositionByHeaders = headers.findIndex((field) => field === HEADER.IVA);
-	const igicPositionByHeaders = headers.findIndex((field) => field === HEADER.IGIC);
+	const grossPositionByHeaders = headers.findIndex((field) => field === NET_CALCULATED_RULE_FIELDS.GROSS);
+	const netPositionByHeaders = headers.findIndex((field) => field === NET_CALCULATED_RULE_FIELDS.NET);
+	const ivaPositionByHeaders = headers.findIndex((field) => field === NET_CALCULATED_RULE_FIELDS.IVA);
+	const igicPositionByHeaders = headers.findIndex((field) => field === NET_CALCULATED_RULE_FIELDS.IGIC);
 
 	// Sanitized Fields
 	const grossFieldSanitized = parseFloat(fields[grossPositionByHeaders]);
@@ -25,7 +18,5 @@ export function execute(payload: RulesOrFalse): RulesOrFalse {
 
 	// Calculate Net value
 	const calculatedNet = grossFieldSanitized * ((100 - taxFieldSanitized) / 100);
-	if (!areEqualComparisonWithAccuracy(netFieldSanitized, calculatedNet)) return false;
-
-	return payload;
+	return !areEqualComparisonWithAccuracy(netFieldSanitized, calculatedNet);
 }
