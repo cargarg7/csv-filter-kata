@@ -4,7 +4,7 @@ export type RulesDecorator = {
 	lines: string[];
 };
 
-export type RulesOrFalse = RulesDecorator | false;
+export type RulesOrInvalid = RulesDecorator | false;
 
 export type RulesInput = {
 	headers: string[];

@@ -9,3 +9,5 @@ export const HEADER = {
 	IVA: 'IVA',
 	IGIC: 'IGIC',
 } as const;
+
+export const DECIMAL_REGEX = '\\d+(\\.\\d+)?';

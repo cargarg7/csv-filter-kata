@@ -1,11 +1,5 @@
 import { parseCSV } from './index';
 
-/***
-Num _factura,Fecha,Bruto,Neto,IVA,IGIC,Concepto,CIF_cliente,NIF_cliente
-1,02/05/2019,1008,810,19,,ACERLaptop,B76430134,
-2,03/08/2019,2000,2000,,8,MacBook Pro,,78544372A
-3,03/12/2019,1000,2000,19,8, LenovoLaptop,,78544372A
- */
 describe('ParseCSV', () => {
 	it('Should throw an ERROR if get one line file', () => {
 		const header = undefined;
@@ -13,7 +7,7 @@ describe('ParseCSV', () => {
 		expect(() => parseCSV(header, lines)).toThrow('Header must not be empty');
 	});
 
-	it('Should return header without lines if no lines', () => {
+	it('Should return just header if no lines', () => {
 		const header = 'Num _factura,Fecha,Bruto,Neto,IVA,IGIC,Concepto,CIF_cliente,NIF_cliente';
 		const lines = [];
 		expect(parseCSV(header, lines)).toEqual({
@@ -60,9 +54,45 @@ describe('ParseCSV', () => {
 		});
 	});
 
+	it('Should remove line if IVA is not number in same invoice line', () => {
+		const header = 'Num _factura,Fecha,Bruto,Neto,IVA,IGIC,Concepto,CIF_cliente,NIF_cliente';
+		const lines = ['1,02/05/2019,1000,800,TWENTTY,,ACERLaptop,B76430134,'];
+		expect(parseCSV(header, lines)).toEqual({
+			header,
+			lines: [],
+		});
+	});
+
+	it('Should remove line if IGIC is not number in same invoice line', () => {
+		const header = 'Num _factura,Fecha,Bruto,Neto,IVA,IGIC,Concepto,CIF_cliente,NIF_cliente';
+		const lines = ['1,02/05/2019,1000,800,,TWENTY,ACERLaptop,B76430134,'];
+		expect(parseCSV(header, lines)).toEqual({
+			header,
+			lines: [],
+		});
+	});
+
 	it('Should remove line if Net balance is miscalculated in same invoice line', () => {
 		const header = 'Num _factura,Fecha,Bruto,Neto,IVA,IGIC,Concepto,CIF_cliente,NIF_cliente';
 		const lines = ['1,02/05/2019,1000,500,20,,ACERLaptop,B76430134,'];
+		expect(parseCSV(header, lines)).toEqual({
+			header,
+			lines: [],
+		});
+	});
+
+	it('Should remove line if Net balance is not a number in same invoice line', () => {
+		const header = 'Num _factura,Fecha,Bruto,Neto,IVA,IGIC,Concepto,CIF_cliente,NIF_cliente';
+		const lines = ['1,02/05/2019,1000,FIVE HUNDRED,20,,ACERLaptop,B76430134,'];
+		expect(parseCSV(header, lines)).toEqual({
+			header,
+			lines: [],
+		});
+	});
+
+	it('Should remove line if Gross balance is not a number in same invoice line', () => {
+		const header = 'Num _factura,Fecha,Bruto,Neto,IVA,IGIC,Concepto,CIF_cliente,NIF_cliente';
+		const lines = ['1,02/05/2019,ONE THOUSAND,500,20,,ACERLaptop,B76430134,'];
 		expect(parseCSV(header, lines)).toEqual({
 			header,
 			lines: [],

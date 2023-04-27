@@ -1,15 +1,15 @@
 import { compose } from '../compose.helper';
-import { ruleDecorator } from './rules.decorator';
-import { execute as identityRule } from './identity-rule';
-import { execute as netCalculatedRule } from './net-calculated-rule';
-import { execute as taxRule } from './tax-rule';
-import { execute as uniqueInvoiceRule } from './unique-invoice-rule';
+import { ruleDecorator } from './decorators/rules.decorator';
+import { invalid as identityRuleInvalid } from './identity-rule';
+import { invalid as netCalculatedRuleInvalid } from './net-calculated-rule';
+import { invalid as taxRuleInvalid } from './tax-rule';
+import { invalid as uniqueInvoiceRuleInvalid } from './unique-invoice-rule';
 
 export function rules({ header, line, lines }) {
 	return compose(
-		ruleDecorator(netCalculatedRule),
-		ruleDecorator(taxRule),
-		ruleDecorator(identityRule),
-		ruleDecorator(uniqueInvoiceRule)
+		ruleDecorator(netCalculatedRuleInvalid),
+		ruleDecorator(taxRuleInvalid),
+		ruleDecorator(identityRuleInvalid),
+		ruleDecorator(uniqueInvoiceRuleInvalid)
 	)({ header, line, lines });
 }
