@@ -109,6 +109,18 @@ describe('ParseCSV', () => {
 		});
 	});
 
+	it('Should return line if everything is OK with several lines', () => {
+		const lines = [
+			withOneInvoiceLineHaving(),
+			withOneInvoiceLineHaving({ invoiceId: '2' }),
+			withOneInvoiceLineHaving({ invoiceId: '3' }),
+		];
+		expect(parseCSV(header, lines)).toEqual({
+			header,
+			lines: [lines[0], lines[1], lines[2]],
+		});
+	});
+
 	function withOneInvoiceLineHaving({
 		invoiceId = '1',
 		date = '02/05/2019',
