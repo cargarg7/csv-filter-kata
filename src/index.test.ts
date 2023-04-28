@@ -69,8 +69,16 @@ describe('ParseCSV', () => {
 		});
 	});
 
-	it('Should remove line if Net balance is miscalculated in same invoice line', () => {
+	it('Should remove line if Net balance is miscalculated with ivaTax in same invoice line', () => {
 		const lines = [withOneInvoiceLineHaving({ netImport: '500' })];
+		expect(parseCSV(header, lines)).toEqual({
+			header,
+			lines: [],
+		});
+	});
+
+	it('Should remove line if Net balance is miscalculated with igicTax in same invoice line', () => {
+		const lines = [withOneInvoiceLineHaving({ netImport: '500', ivaTax: '', igicTax: '20' })];
 		expect(parseCSV(header, lines)).toEqual({
 			header,
 			lines: [],
