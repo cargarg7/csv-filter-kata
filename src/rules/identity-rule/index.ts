@@ -1,7 +1,7 @@
 import { RulesInput } from '../types';
 import { IDENTITY_RULE_FIELDS } from './enums';
 
-export function invalid({ headers, fields }: RulesInput): boolean {
+export function isValid({ headers, fields }: RulesInput): boolean {
 	// Position Index by Headers
 	const cifPositionByHeaders = headers.findIndex((field) => field === IDENTITY_RULE_FIELDS.CIF);
 	const nifPositionByHeaders = headers.findIndex((field) => field === IDENTITY_RULE_FIELDS.NIF);
@@ -11,5 +11,5 @@ export function invalid({ headers, fields }: RulesInput): boolean {
 	const nifField = fields[nifPositionByHeaders];
 
 	// Rule
-	return !!(cifField && nifField);
+	return !(cifField && nifField);
 }

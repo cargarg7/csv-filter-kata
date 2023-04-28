@@ -5,8 +5,7 @@ export function parseCSV(header?: string, lines?: string[]) {
 	if (!lines?.length) return { header, lines: [] };
 
 	// Rules
-	const linesFiltered = lines?.filter((line: string) => !!rules({ header, line, lines }));
-	console.log('linesFiltered', linesFiltered);
+	const linesFiltered = lines?.filter((line: string) => rules({ header, line, lines }));
 	return {
 		header,
 		lines: linesFiltered,

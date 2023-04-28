@@ -1,4 +1,4 @@
-export const RULE_VALIDATE_HAS_ERROR = {
+export const RULE_VALIDATE_IS_VALID = {
 	TRUE: true,
 	FALSE: false,
 } as const;

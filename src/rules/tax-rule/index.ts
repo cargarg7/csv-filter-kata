@@ -2,7 +2,7 @@ import { RulesInput } from '../types';
 import { TAX_RULE_FIELDS } from './enums';
 import { validateDecimals } from '../helpers/validate-decimals';
 
-export function invalid({ headers, fields }: RulesInput): boolean {
+export function isValid({ headers, fields }: RulesInput): boolean {
 	// Position Index by Headers
 	const ivaPositionByHeaders = headers.findIndex((field) => field === TAX_RULE_FIELDS.IVA);
 	const igicPositionByHeaders = headers.findIndex((field) => field === TAX_RULE_FIELDS.IGIC);
@@ -12,5 +12,5 @@ export function invalid({ headers, fields }: RulesInput): boolean {
 	const igicField = fields[igicPositionByHeaders];
 
 	// Rule
-	return !!(ivaField && igicField) || !validateDecimals([ivaField || igicField]);
+	return !(ivaField && igicField) && validateDecimals([ivaField || igicField]);
 }
