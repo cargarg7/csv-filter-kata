@@ -1,8 +1,8 @@
-import { SEPARATOR_CSV } from '../../enums';
-import { RulesCallback, ContinueOrFalse } from '../types';
-import { LINE_SHOULD_BE_PROCESSED } from '../enums';
+import { RulesCallback, ContinueOrFalse } from '../types/rules-decorator';
+import { SEPARATOR_CSV } from '../../../enums/separator-csv';
+import { LINE_SHOULD_BE_PROCESSED } from '../enums/line-should-be-processed';
 
-export function ruleDecorator(isValidRule: RulesCallback) {
+export function isValidRuleOrNext(isValidRule: RulesCallback) {
 	return (payload: ContinueOrFalse): ContinueOrFalse => {
 		if (payload === false) return LINE_SHOULD_BE_PROCESSED.FALSE;
 

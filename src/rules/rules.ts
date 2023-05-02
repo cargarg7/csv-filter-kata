@@ -1,6 +1,6 @@
-import { RulesDecorator } from './types';
-import { compose } from '../compose.helper';
-import { ruleDecorator } from './decorators/rules.decorator';
+import { RulesDecorator } from './common/types/rules-decorator';
+import { isValidRuleOrNext } from './common/decorators/is-valid-rule-or-next';
+import { compose } from '../helpers/compose-functions';
 import { isValid as identityRule } from './identity-rule';
 import { isValid as netCalculatedRule } from './net-calculated-rule';
 import { isValid as taxRule } from './tax-rule';
@@ -8,10 +8,10 @@ import { isValid as uniqueInvoiceRule } from './unique-invoice-rule';
 
 export function rules({ header, line, lines }: RulesDecorator): boolean {
 	const areValidValidationRules = compose(
-		ruleDecorator(netCalculatedRule),
-		ruleDecorator(taxRule),
-		ruleDecorator(identityRule),
-		ruleDecorator(uniqueInvoiceRule)
+		isValidRuleOrNext(netCalculatedRule),
+		isValidRuleOrNext(taxRule),
+		isValidRuleOrNext(identityRule),
+		isValidRuleOrNext(uniqueInvoiceRule)
 	)({ header, line, lines });
 	return !!areValidValidationRules;
 }
